@@ -1,0 +1,36 @@
+name: Go Build & Lint
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-verify:
+    name: Build and Verify
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Go Environment
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Verify Formatting
+        run: |
+          if [ -n "$(gofmt -l .)" ]; then
+            echo "::error::Code is not formatted. Please run 'go fmt ./...'"
+            gofmt -d .
+            exit 1
+          fi
+          echo "Format check passed."
+
+      - name: Static Analysis (Go Vet)
+        run: go vet ./...
+
+      - name: Build All Modules
+        run: go build -v ./...

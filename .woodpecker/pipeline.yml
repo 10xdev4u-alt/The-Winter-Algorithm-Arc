@@ -1,0 +1,13 @@
+pipeline:
+  backend-check:
+    image: golang:1.23
+    commands:
+      - go version
+      - if [ -n "$(gofmt -l .)" ]; then echo "❌ Code not formatted!"; exit 1; fi
+      - go vet ./...
+      - go build -v ./...
+
+  notify:
+    image: alpine
+    commands:
+      - echo "🦜 Woodpecker says - Build Passed on Codeberg!"
