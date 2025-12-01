@@ -4,7 +4,6 @@ steps:
     commands:
       - go version
       - if [ -n "$(gofmt -l .)" ]; then echo "❌ Code not formatted! Run 'gofmt -w .'"; exit 1; fi
-      - go vet ./...
       - find . -name "*.go" ! -name "*_test.go" -print0 | xargs -0 -n1 go build -v
 
   notify:

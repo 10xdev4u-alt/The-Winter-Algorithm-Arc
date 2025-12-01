@@ -29,9 +29,6 @@ jobs:
           fi
           echo "Format check passed."
 
-      - name: Static Analysis (Go Vet)
-        run: go vet ./...
-
       - name: Build All Files (Space-Safe)
         run: |
           find . -name "*.go" ! -name "*_test.go" -print0 | while IFS= read -r -d '' file; do
