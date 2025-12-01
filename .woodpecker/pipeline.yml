@@ -1,11 +1,11 @@
-pipeline:
+steps:
   backend-check:
     image: golang:1.23
     commands:
       - go version
-      - if [ -n "$(gofmt -l .)" ]; then echo "❌ Code not formatted!"; exit 1; fi
+      - if [ -n "$(gofmt -l .)" ]; then echo "❌ Code not formatted! Run 'gofmt -w .'"; exit 1; fi
       - go vet ./...
-      - go build -v ./...
+      - find . -name "*.go" ! -name "*_test.go" -print0 | xargs -0 -n1 go build -v
 
   notify:
     image: alpine

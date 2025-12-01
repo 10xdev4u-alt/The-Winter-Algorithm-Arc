@@ -23,7 +23,7 @@ jobs:
       - name: Verify Formatting
         run: |
           if [ -n "$(gofmt -l .)" ]; then
-            echo "::error::Code is not formatted. Please run 'go fmt ./...'"
+            echo "::error::Code is not formatted. Please run 'gofmt -w .' locally to fix this."
             gofmt -d .
             exit 1
           fi
@@ -32,5 +32,9 @@ jobs:
       - name: Static Analysis (Go Vet)
         run: go vet ./...
 
-      - name: Build All Modules
-        run: go build -v ./...
+      - name: Build All Files (Space-Safe)
+        run: |
+          find . -name "*.go" ! -name "*_test.go" -print0 | while IFS= read -r -d '' file; do
+            echo "Building $file..."
+            go build -v "$file"
+          done
