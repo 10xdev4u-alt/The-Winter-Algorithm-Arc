@@ -8,8 +8,8 @@ import (
 
 type NstdChst struct {
 	isIntr bool
-	val int
-	Lst []*NstdChst
+	val    int
+	Lst    []*NstdChst
 }
 
 var idx int
@@ -21,10 +21,10 @@ func parse(s string) *NstdChst {
 
 func dfs(s string) *NstdChst {
 	switch s[idx] {
-		case '[':
-			return parseList(s)
-		default:
-			return parseInt(s)
+	case '[':
+		return parseList(s)
+	default:
+		return parseInt(s)
 	}
 }
 
@@ -45,15 +45,15 @@ func parseList(s string) *NstdChst {
 
 	for idx < len(s) {
 		switch s[idx] {
-			case ']':
-				idx++
-				return Chst
-			case ',':
-				idx++
-			case '[':
-				Chst.Lst = append(Chst.Lst, parseList(s))
-			default:
-				Chst.Lst = append(Chst.Lst, parseInt(s))
+		case ']':
+			idx++
+			return Chst
+		case ',':
+			idx++
+		case '[':
+			Chst.Lst = append(Chst.Lst, parseList(s))
+		default:
+			Chst.Lst = append(Chst.Lst, parseInt(s))
 		}
 	}
 	return Chst
